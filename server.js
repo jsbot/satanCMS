@@ -143,7 +143,7 @@ function start() {
 	}
 
 	/**
-	 * FILE WRITE
+	 * FILE WRITE TEST
 	 */
 /*	fs.writeFile("../satanCMS/files/test.txt", "Hey there!", function(err) {
 		if(err) {
