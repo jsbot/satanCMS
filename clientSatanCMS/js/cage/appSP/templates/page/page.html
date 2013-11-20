@@ -16,4 +16,14 @@
 	</div>
 	<button type="button" class="gtreg btn btn-success">Save</button>
 
+
+
+{{#each api}}
+	{{#ifObject this}}
+		{{this}}
+	{{else}}
+		Key: {{@key}} Value ={{this}} <br/>
+	{{/ifObject}}
+{{/each}}
+
 </div>

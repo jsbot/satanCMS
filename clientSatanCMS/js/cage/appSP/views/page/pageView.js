@@ -41,6 +41,16 @@ define([
 
 		initialize: function () {
 			var _this = this;
+			Handlebars.registerHelper('ifObject', function(item, options) {
+				if(typeof item == "object") {
+					var html = _this.template(this);
+
+					return options.fn(html);
+				} else {
+					return options.inverse(this);
+				}
+			});
+
 			conn = connector;
 			conn.getMessage('wellcome', function (data) {
 				console.log(data);
