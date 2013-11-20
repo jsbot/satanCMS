@@ -48,9 +48,11 @@ function start() {
 		console.log(err);
 	});
 
-	mongoose.connect('mongodb://satan:reboot@ds053678.mongolab.com:53678/bet365');
-	//mongoose.connect('mongodb://admin:AaYae8ae@il-hub-node01:27017/bet365');
-	//mongoose.connect('mongodb://localhost/bet365');
+/**
+ * AREA FOR MONGOOSE CONNECTION
+ * ****/
+
+	mongoose.connect('mongodb://<user>:<password>@<server>');
 
 	var Api = mongoose.model('api', apiSh);
 
