@@ -1,0 +1,18 @@
+{
+	"getFriends": {
+		"collection": "friends",
+		"id": "0001"
+	},
+	"valideteUser": {
+		"collection": "users",
+		"login": "",
+		"password": "",
+		"id": "0002"
+	},
+	"registerUser": {
+		"collection": "users",
+		"username": "",
+		"password": "",
+		"id": "0003"
+	}
+}

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>SimpleP</title>
+
+</head>
+<body>
+<script src="socket.io.js"></script>
+<script>
+	socket = io.connect('http://127.0.0.1:8880');
+	socket.on('wellcome', function (data) {
+		console.log(data);
+	});
+	function sendMessage(data) {
+		socket.emit('logmessage', {log: "text for logging",test: "['bla','bla']"});
+	}
+
+</script>
+<a onclick="sendMessage()">SendMessage</a>
+</body>
+</html>

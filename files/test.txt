@@ -1,0 +1,16 @@
+ "api": {
+        "id": "IMS_API",
+        "protocol": "http",
+        "path": "ci.playtechmobile.com:4810",
+        "fallbackPath": "ci.playtechmobile.com:4810",
+        "urlPrefix": "hub_",
+        "defaults": {
+            "casinoName": "dafapoker",
+            "systemId": "1961",
+            "realMode": 1,
+            "clientVersion": "70",
+            "clientPlatform": "mobile",
+            "languageCode": "EN",
+            "deviceId": "xxPxxx",
+            "clientType": "casino"
+        }
