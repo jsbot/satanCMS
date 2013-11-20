@@ -1,0 +1,12 @@
+<div style="border:1px solid red; padding-left:100px;">
+<h5>{{target}}</h5>
+{{#each obj}}
+
+{{#ifObject  this @key }}
+
+{{else}}
+    <label>{{@key}}</label>
+    <input id="api_{{@key}}" type="text" value="{{this}}"/>
+{{/ifObject}}
+{{/each}}
+</div>

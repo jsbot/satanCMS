@@ -7,14 +7,16 @@ define([
 	// Using the Require.js text! plugin, we are loaded raw text
 	// which will be used as our views primary template
 	'text!cage/appSP/templates/page/page.html',
+	'text!cage/appSP/templates/page/subObj.html',
 	'handlebars',
 	'service/connector'
-], function ($, _, Backbone, PageModel, pageTemplate, Handlebars, connector) {
+], function ($, _, Backbone, PageModel, pageTemplate, subObjTemplate, Handlebars, connector) {
 
 
 	pageView = Backbone.View.extend({
 		el: $('#container'),
 		template: Handlebars.compile(pageTemplate),
+        subObjtemplate: Handlebars.compile(subObjTemplate),
 		events: {
 			"click .gtreg": "updateData"
 		},
@@ -41,11 +43,13 @@ define([
 
 		initialize: function () {
 			var _this = this;
-			Handlebars.registerHelper('ifObject', function(item, options) {
+			Handlebars.registerHelper('ifObject', function(item, target, options) {
 				if(typeof item == "object") {
-					var html = _this.template(this);
+					var html = _this.subObjtemplate({obj:item, target:target});
 
-					return options.fn(html);
+                    console.log(html);
+
+                    return new Handlebars.SafeString(html);
 				} else {
 					return options.inverse(this);
 				}
@@ -68,7 +72,8 @@ define([
 					path:   modelData.path,
 					fallbackPath: modelData.fallbackPath,
 					urlPrefix: modelData.urlPrefix,
-					defaults: {casinoName: modelData.defaults.casinoName, systemId: modelData.defaults.systemId}
+					defaults: {casinoName: modelData.defaults.casinoName, systemId: modelData.defaults.systemId},
+					testObj: {field:modelData.testObj.field ,innerObj: {data:modelData.testObj.innerObj.data,someField:modelData.testObj.innerObj.someField}}
 				});
 				_this.render();
 			});

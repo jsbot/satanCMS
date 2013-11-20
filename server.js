@@ -37,7 +37,9 @@ function start() {
 		path:   String,
 		fallbackPath: String,
 		urlPrefix: String,
-		defaults: {casinoName: String, systemId: String}
+		defaults: {casinoName: String, systemId: String},
+        testObj: {innerObj: {data: String}}
+
 	},{collection:'api'});
 
 	mongoose.connection.on('open', function (ref) {
