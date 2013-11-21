@@ -65,17 +65,27 @@ define([
 
 			conn.req('getApi', function (data) {
 				var modelData = data[0];
-				console.log(modelData);
-				_this.model.set({
+
+				/*{
 					id:  modelData.id,
-					protocol: modelData.protocol,
+						protocol: modelData.protocol,
 					path:   modelData.path,
 					fallbackPath: modelData.fallbackPath,
 					urlPrefix: modelData.urlPrefix,
 					defaults: {casinoName: modelData.defaults.casinoName, systemId: modelData.defaults.systemId},
 					testObj: {field:modelData.testObj.field ,innerObj: {data:modelData.testObj.innerObj.data,someField:modelData.testObj.innerObj.someField}}
-				});
+				}*/
+				_this.model.set(modelData);
+
 				_this.render();
+				_this.model.on('change:testObj.field',function(){
+					console.log("---------TEST FIELD-------------->");
+					console.log(
+					_this.model.get("testObj").field
+					);
+				});
+				_this.model.get("testObj").field = "bla";
+
 			});
 
 		}

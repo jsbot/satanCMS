@@ -11,7 +11,9 @@ define([
 	        fallbackPath: "",
 	        urlPrefix: "",
 	        defaults: {casinoName: "", systemId: ""},
-            testObj: {field: "", innerObj: {data: "",someField:""}}
+            testObj: {
+	                field: "",
+	                innerObj: {data: "",someField:""}}
         }
     });
     // Return the model for the module
