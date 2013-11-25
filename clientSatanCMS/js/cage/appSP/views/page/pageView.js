@@ -26,7 +26,7 @@ define([
 			var defaults = {};
 			defaults.casinoName= $('#api_casinoName').val();
 			defaults.systemId= $('#api_systemId').val();
-            this.preverse($(".entry"));
+            this.preverse($(".test"),'');
 			/*conn.req('updateApi', " id="+$('#api_id').val()
 				,   "  protocol="+$('#api_protocol').val()+
 					"| path="+$('#api_path').val()+
@@ -36,47 +36,50 @@ define([
 				, function (data) {
 				console.log(data);
 			});*/
+            console.log(this.newObj);
 		},
 		render: function () {
 			var context = this.model;
 			var html = this.template({api: context.toJSON()});
 			this.$el.html(html);
 		},
-        preverse: function(elem){
+        preverse: function(elem, hyerarchy){
             var _this = this;
-            //$(elem).children().each(function(i,e){
 
-                $(elem).children().each(function(i,el){
-                    if($(el).children().length>0){
+            $($(elem).find("[d\-bind]")).each(function(i,value){
+                if($(value).is("input")){
+                    //console.log("hyerarchy: "+ hyerarchy);
+                    //console.log("parent data bind: "+$(value).parent().attr("d\-bind" ));
 
-                        _this.preverse($(el));
+                        if(hyerarchy=='' && $(value).parent().attr("d\-bind" ) == undefined){
 
-                    }else{
-
-                        if ($(el).attr('d-bind')!= undefined){
-
-
-                        if ($(el).parent().attr("d-bind")!=undefined){
-                            console.log($(el).attr('d-bind'));
-                            var tobj = {};
-
-                            tobj[$(el).attr('d-bind')]=$(el).val();
-                            console.log(tobj);
-                            _this.newObj[$(el).parent().attr("d-bind")]=tobj;
-                        }else{
-                            _this.newObj[$(el).attr('d-bind')]=$(el).val();
+                            _this.newObj[$(value).attr("d\-bind" )] = $(value).val();
                         }
-
+                        if(hyerarchy!='' && $(value).parent().attr("d\-bind" )!=hyerarchy.substr(hyerarchy.length-$(value).parent().attr("d\-bind").length,hyerarchy.length)){
+                            console.log($(value).parent().attr("d\-bind" )+' '+hyerarchy);
+                            var h = hyerarchy.substr(1,hyerarchy.length)
+                            var o = _this.namespace(h,'.',_this.newObj);
+                            o[$(value).attr("d\-bind" )] = $(value).val();
                         }
-
                     }
-                    //console.log($(el).attr('d-bind'));
+                else{
+                    //console.log(hyerarchy+'.'+$(value).attr("d\-bind" ));
+                    _this.preverse($(value), hyerarchy+'.'+$(value).attr("d\-bind" ));
+                }
 
-                });
-                console.log(_this.newObj);
-                //console.log("length:"+ $(e).children().length);
+            });
 
-            //});
+
+        },
+        namespace: function(name, separator, container){
+            var ns = name.split(separator || '.'),
+                o = container || window,
+                i,
+                len;
+            for(i = 0, len = ns.length; i < len; i++){
+                o = o[ns[i]] = o[ns[i]] || {};
+            }
+            return o;
         },
 		initialize: function () {
 			var _this = this;
