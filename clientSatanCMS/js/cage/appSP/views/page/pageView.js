@@ -52,11 +52,10 @@ define([
                     //console.log("parent data bind: "+$(value).parent().attr("d\-bind" ));
 
                         if(hyerarchy=='' && $(value).parent().attr("d\-bind" ) == undefined){
-
                             _this.newObj[$(value).attr("d\-bind" )] = $(value).val();
                         }
-                        if(hyerarchy!='' && $(value).parent().attr("d\-bind" )!=hyerarchy.substr(hyerarchy.length-$(value).parent().attr("d\-bind").length,hyerarchy.length)){
-                            console.log($(value).parent().attr("d\-bind" )+' '+hyerarchy);
+                        if(hyerarchy!='' && hyerarchy.substr(1,hyerarchy.length)!=$(value).parent().attr("d\-bind") && $(value).parent().attr("d\-bind" )==hyerarchy.substr(hyerarchy.length-$(value).parent().attr("d\-bind").length,hyerarchy.length)){
+                            console.log($(value).attr("d\-bind" )+" "+hyerarchy+' '+$(value).parent().attr("d\-bind") );
                             var h = hyerarchy.substr(1,hyerarchy.length)
                             var o = _this.namespace(h,'.',_this.newObj);
                             o[$(value).attr("d\-bind" )] = $(value).val();
