@@ -49,7 +49,7 @@ define(["json2", "text!service/messages.json"], function (json2, messages) {
 			var arg1 = arrSplit[1];
 			queItm[arg0.replace(/^\s+|\s+$/g,'')]=arg1.replace(/^\s+|\s+$/g,'');
 			data.push(queItm);
-		if (arr.length>3){
+		/*if (arr.length>3){
 			var arrDataSplit = new Array();
 			for (var i=2; i<arr.length-1; i++){
 				arrDataSplit = arr[i].split('|');
@@ -61,6 +61,12 @@ define(["json2", "text!service/messages.json"], function (json2, messages) {
 				queData[arg0.replace(/^\s+|\s+$/g,'')]=arg1.replace(/^\s+|\s+$/g,'');;
 			}
 			data.push(queData);
+		}*/
+		if (arr.length>3){
+			for (var i=2; i<arr.length-1; i++){
+				data.push(arr[i]);
+			}
+
 		}
 
 		return data;

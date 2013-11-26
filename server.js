@@ -32,14 +32,22 @@ function start() {
 	var Schema = mongoose.Schema;
 
 	var apiSh = new Schema({
-		id:  String,
+		id: String,
 		protocol: String,
-		path:   String,
+		path: String,
 		fallbackPath: String,
 		urlPrefix: String,
-		defaults: {casinoName: String, systemId: String},
-        testObj: {innerObj: {data: String}}
-
+		defaults: {
+			casinoName: String,
+			systemId: String,
+			secretKey: String,
+			realMode: String,
+			clientVersion: String,
+			clientPlatform: String,
+			languageCode: String,
+			deviceId: String,
+			clientType: String
+		}
 	},{collection:'api'});
 
 	mongoose.connection.on('open', function (ref) {
@@ -132,8 +140,8 @@ function start() {
 	}
 	db.prototype.updateApi = function(ioClient, mId, objUpdtData){
 		console.log("updateApi called");
-		//console.log(objUpdtData);
-		objUpdtData[1] = odjSringifyer(objUpdtData[1]);
+		console.log(objUpdtData);
+		//objUpdtData[1] = odjSringifyer(objUpdtData[1]);
 
 		dbApiInstance.update(function(data){
 			console.log(data);

@@ -29,7 +29,7 @@ define(["service/pupsub", "service/messageHelper"], function (pupsub, messageHel
 		if (arguments.length>2){
 			data = messageHelper.createDataObj(arguments);
 		}
-
+		console.log(data);
 		this.io.emit('serverRequest',mId, messageType, data);
 		//subscribe for event
 		console.log("sendMessageRequest: "+messageType+" mId: "+mId);
