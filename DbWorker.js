@@ -3,11 +3,11 @@ function DbWorker(shemaInstance){
 }
 DbWorker.prototype.find = function(cb){
 	var query ={};
-	(arguments.length>1) ?	query[arguments[1]]=1 : query = {}
+	(arguments.length>1) ?	query[arguments[1]]={$exists:true} : query = {}
 	console.log("query:");
 	console.log(query);
 	this.shema.find(
-		{},query
+		query
 		, function(err, data) {
 			cb(data);
 		});

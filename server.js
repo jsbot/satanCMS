@@ -66,8 +66,8 @@ function start() {
 			}
 	});
 	var verticalsSh = new Schema({
-		default: [Schema.VerticalsStructure],
-		NGM: [Schema.VerticalsStructure]
+		default: [VerticalsStructure],
+		NGM: [VerticalsStructure]
 	}, {collection:'verticals'})
 
 
@@ -177,6 +177,11 @@ function start() {
 		},objUpdtData[0],JSON.parse(objUpdtData[1]));
 		//update({"id":"test_id3"},{"test":"UPPER CASE2","path":"http://blabla"});
 	}
+    db.prototype.updateVerticals = function(){
+        dbVerticalsInstance.update(function(data){
+            console.log(data);
+        },{},JSON.parse(objUpdtData[1]));
+    }
 	var caller = new db();
 	messageCofig = {
 		"getApi" : caller.getApi,
