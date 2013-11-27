@@ -44,10 +44,15 @@ define(["json2", "text!service/messages.json"], function (json2, messages) {
 		var data = new Array();
 		var queItm={};
 		var queData = {};
+
 			var arrSplit = arr[1].split('=');
-			var arg0 = arrSplit[0];
-			var arg1 = arrSplit[1];
-			queItm[arg0.replace(/^\s+|\s+$/g,'')]=arg1.replace(/^\s+|\s+$/g,'');
+			if (arrSplit.length>1){
+				var arg0 = arrSplit[0];
+				var arg1 = arrSplit[1];
+				queItm[arg0.replace(/^\s+|\s+$/g,'')]=arg1.replace(/^\s+|\s+$/g,'');
+			}else{
+				queItm = arr[1];
+			}
 			data.push(queItm);
 		/*if (arr.length>3){
 			var arrDataSplit = new Array();

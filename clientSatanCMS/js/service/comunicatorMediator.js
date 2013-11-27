@@ -33,7 +33,9 @@ define(["service/pupsub", "service/messageHelper"], function (pupsub, messageHel
 		this.io.emit('serverRequest',mId, messageType, data);
 		//subscribe for event
 		console.log("sendMessageRequest: "+messageType+" mId: "+mId);
-		pubsub.subscribe(messageStore[mId]=callback);
+		pubsub.subscribe(messageStore[mId]=arguments[arguments.length-1]);
+		console.log("MESSAGESTORE");
+		console.log(messageStore[mId]);
 	}
 
 

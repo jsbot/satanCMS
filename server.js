@@ -49,6 +49,27 @@ function start() {
 			clientType: String
 		}
 	},{collection:'api'});
+	var VerticalsStructure = new Schema({
+			systemId: String,
+			playModes: {
+					loggedIn: [Number],
+					"loggedOut": [Number, Number]
+			},
+			iFrame: Boolean,
+			redirect: {
+					origin: String,
+					pathname: String,
+					templateTypes: {
+							real: [String, String, String, String, String, String],
+							"fun": [String, String, String, String]
+					}
+			}
+	});
+	var verticalsSh = new Schema({
+		default: [Schema.VerticalsStructure],
+		NGM: [Schema.VerticalsStructure]
+	}, {collection:'verticals'})
+
 
 	mongoose.connection.on('open', function (ref) {
 		console.log('Connected to mongo server.');
@@ -65,6 +86,7 @@ function start() {
 	mongoose.connect('mongodb://<user>:<password>@<server>');
 
 	var Api = mongoose.model('api', apiSh);
+	var Verticals = mongoose.model('verticals', verticalsSh);
 
 	/**
 	 * DB PART
@@ -131,6 +153,7 @@ function start() {
 		return(o);
 	}
 	var dbApiInstance = new dbw.DbWorker(Api);
+	var dbVerticalsInstance = new dbw.DbWorker(Verticals);
 	function db(){}
 	db.prototype.getApi = function(ioClient, mId){
 		console.log("getApi called");
@@ -138,22 +161,29 @@ function start() {
 			ioClient.emit("serverResponse",mId, data);
 		});
 	}
+	db.prototype.getVerticals = function(ioClient, mId, queryData){
+		console.log("getVerticals called"+mId);
+		dbVerticalsInstance.find(function(data){
+			ioClient.emit("serverResponse",mId, JSON.stringify(data));
+		},queryData);
+	}
 	db.prototype.updateApi = function(ioClient, mId, objUpdtData){
 		console.log("updateApi called");
-		console.log(objUpdtData);
 		//objUpdtData[1] = odjSringifyer(objUpdtData[1]);
+		//console.log(JSON.parse(objUpdtData[1]));
 
 		dbApiInstance.update(function(data){
 			console.log(data);
-		},objUpdtData[0],objUpdtData[1]);
+		},objUpdtData[0],JSON.parse(objUpdtData[1]));
 		//update({"id":"test_id3"},{"test":"UPPER CASE2","path":"http://blabla"});
 	}
 	var caller = new db();
 	messageCofig = {
 		"getApi" : caller.getApi,
+		"getVerticals": caller.getVerticals,
 		"updateApi": caller.updateApi
 	}
-
+	//caller.getVerticals('asdads','asdadsa',"NGM");
 	/**
 	 * FILE WRITE TEST
 	 */

@@ -2,14 +2,26 @@ function DbWorker(shemaInstance){
 	this.shema = shemaInstance;
 }
 DbWorker.prototype.find = function(cb){
-	(arguments.length>1) ?	query = arguments[1] : query = {}
+	var query ={};
+	(arguments.length>1) ?	query[arguments[1]]=1 : query = {}
 	console.log("query:");
 	console.log(query);
 	this.shema.find(
-		query
+		{},query
 		, function(err, data) {
 			cb(data);
 		});
+}
+DbWorker.prototype.findOne = function(cb){
+	(arguments.length>1) ?	query = arguments[1] : query = {}
+	console.log("query:");
+	console.log(query);
+
+	this.shema.findOne(
+		{},{query:1}
+	, function(err, data) {
+	cb(data);
+});
 }
 DbWorker.prototype.update = function(cb, query, updateData){
 	this.shema.update(
