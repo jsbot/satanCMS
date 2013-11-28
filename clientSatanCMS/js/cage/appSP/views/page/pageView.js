@@ -19,6 +19,7 @@ define([
 		subObjtemplate: Handlebars.compile(subObjTemplate),
 		events: {
 			"click .gtreg": "updateData",
+			"click .vert": "updateVerticals",
 			"click .ngm": "getNgm"
 		},
 		getNgm: function(){
@@ -27,9 +28,12 @@ define([
 				var data = JSON.parse(data);
 				var modelData = data[0];
 				console.log("MODEL_DATA");
-				console.log(modelData.NGM[0]);
+				console.log(modelData);
 				//_this.model.set(modelData.NGM[0]);
-				_this.model.clear().set(modelData.NGM[0]);
+
+				_this.model.clear();
+				_this.model.set("_id",modelData._id);
+				_this.model.set(modelData.NGM[0]);
 
 				_this.render();
 
@@ -37,17 +41,26 @@ define([
 			});
 		},
 		updateData: function () {
-			var defaults = {};
-			defaults.casinoName = $('#api_casinoName').val();
-			defaults.systemId = $('#api_systemId').val();
 			var output = {};
 			this.preverse($(".entry"), output);
-		/*	delete output["_id"];
-			conn.req('updateApi', " id="+$("[d-bind='id']").val()
+			delete output["_id"];
+			conn.req('updateApi', $("[d-bind='_id']").val()
 			 ,  JSON.stringify(output)
 			 , function (data) {
 			 console.log(data);
-			 });*/
+			 });
+
+			console.log(output);
+		},
+		updateVerticals: function () {
+			var output = {};
+			this.preverse($(".entry"), output);
+			delete output["_id"];
+			conn.req('updateVerticals', $("[d-bind='_id']").val()
+			 ,  JSON.stringify(output)
+			 , function (data) {
+			 console.log(data);
+			 });
 
 			console.log(output);
 		},

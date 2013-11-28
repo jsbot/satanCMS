@@ -25,7 +25,7 @@ DbWorker.prototype.findOne = function(cb){
 }
 DbWorker.prototype.update = function(cb, query, updateData){
 	this.shema.update(
-		query
+		{_id:query}
 		,{$set: updateData}
 		, function(error, result) {
 			cb(result);

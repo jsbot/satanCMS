@@ -32,6 +32,7 @@ function start() {
 	var Schema = mongoose.Schema;
 
 	var apiSh = new Schema({
+		objectId: Schema.ObjectId,
 		id: String,
 		protocol: String,
 		path: String,
@@ -50,6 +51,7 @@ function start() {
 		}
 	},{collection:'api'});
 	var VerticalsStructure = new Schema({
+			objectId: Schema.ObjectId,
 			systemId: String,
 			playModes: {
 					loggedIn: [Number],
@@ -170,25 +172,30 @@ function start() {
 	db.prototype.updateApi = function(ioClient, mId, objUpdtData){
 		console.log("updateApi called");
 		//objUpdtData[1] = odjSringifyer(objUpdtData[1]);
-		//console.log(JSON.parse(objUpdtData[1]));
+		console.log(objUpdtData[0]);
 
 		dbApiInstance.update(function(data){
 			console.log(data);
 		},objUpdtData[0],JSON.parse(objUpdtData[1]));
 		//update({"id":"test_id3"},{"test":"UPPER CASE2","path":"http://blabla"});
 	}
-    db.prototype.updateVerticals = function(){
-        dbVerticalsInstance.update(function(data){
+    db.prototype.updateVerticals = function(ioClient, mId, objUpdtData){
+	    console.log("updateVerticals called");
+//	    console.log(objUpdtData);
+
+	    console.log(dbVerticalsInstance);/*.update(function(data){
             console.log(data);
-        },{},JSON.parse(objUpdtData[1]));
+        },objUpdtData[0],JSON.parse(objUpdtData[1]));*/
+
     }
 	var caller = new db();
 	messageCofig = {
 		"getApi" : caller.getApi,
 		"getVerticals": caller.getVerticals,
-		"updateApi": caller.updateApi
+		"updateApi": caller.updateApi,
+		"updateVerticals": caller.updateVerticals
 	}
-	//caller.getVerticals('asdads','asdadsa',"NGM");
+	caller.updateVerticals('asdads','asdadsa',['529656da1cc4296283a4a93f', '{"systemId":"26","iFrame":"true","redirect":{"origin":"http://cdntest-mobile.playtechgaming.com","pathname":"/playtech/iceshow/games/casino/casinoclient.html","templateTypes":{"fun":{"":"lang={locale}"},"real":{"":"temptoken={tempToken}"}}},"playModes":{"loggedOut":{"":"1"},"loggedIn":{"":"1"}}}']);
 	/**
 	 * FILE WRITE TEST
 	 */
