@@ -1,8 +1,10 @@
 var http = require("http"),
+    settings = require('./serverConfig'),
 	io = require("socket.io"),
 	mongoose = require('mongoose'),
 	dbw = require('./DbWorker'),
 	fs = require('fs');
+
 
 function start() {
 	function onRequest(request, response) {
@@ -26,7 +28,7 @@ function start() {
 
 	}
 
-	server = http.createServer(onRequest).listen(8880);
+	server = http.createServer(onRequest).listen(settings.serverPort);
 	console.log("Server has started.");
 
 	var Schema = mongoose.Schema;
@@ -69,8 +71,8 @@ function start() {
 	});
 	var verticalsSh = new Schema({
 		default: [VerticalsStructure],
-		NGM: [VerticalsStructure]
-	}, {collection:'verticals'})
+		NGM: String
+	}, {collection:'test'})
 
 
 	mongoose.connection.on('open', function (ref) {
@@ -85,7 +87,7 @@ function start() {
  * AREA FOR MONGOOSE CONNECTION
  * ****/
 
-	mongoose.connect('mongodb://<user>:<password>@<server>');
+mongoose.connect('mongodb://'+settings.dbUser+':'+settings.dbPass+'@'+settings.dbURL);
 
 	var Api = mongoose.model('api', apiSh);
 	var Verticals = mongoose.model('verticals', verticalsSh);
@@ -166,7 +168,7 @@ function start() {
 	db.prototype.getVerticals = function(ioClient, mId, queryData){
 		console.log("getVerticals called"+mId);
 		dbVerticalsInstance.find(function(data){
-			ioClient.emit("serverResponse",mId, JSON.stringify(data));
+			ioClient.emit("serverResponse",mId, data);
 		},queryData);
 	}
 	db.prototype.updateApi = function(ioClient, mId, objUpdtData){
@@ -174,18 +176,18 @@ function start() {
 		//objUpdtData[1] = odjSringifyer(objUpdtData[1]);
 		console.log(objUpdtData[0]);
 
-		dbApiInstance.update(function(data){
-			console.log(data);
+		dbApiInstance.update(function(error, data){
+			console.log(error, data);
 		},objUpdtData[0],JSON.parse(objUpdtData[1]));
 		//update({"id":"test_id3"},{"test":"UPPER CASE2","path":"http://blabla"});
 	}
     db.prototype.updateVerticals = function(ioClient, mId, objUpdtData){
 	    console.log("updateVerticals called");
 //	    console.log(objUpdtData);
-
-	    console.log(dbVerticalsInstance);/*.update(function(data){
-            console.log(data);
-        },objUpdtData[0],JSON.parse(objUpdtData[1]));*/
+        ud = JSON.parse(objUpdtData[2]);
+        dbVerticalsInstance.update(function(err, data){
+            console.log(err, data);
+        },objUpdtData[0],objUpdtData[1],JSON.stringify(ud));
 
     }
 	var caller = new db();
@@ -195,7 +197,6 @@ function start() {
 		"updateApi": caller.updateApi,
 		"updateVerticals": caller.updateVerticals
 	}
-	caller.updateVerticals('asdads','asdadsa',['529656da1cc4296283a4a93f', '{"systemId":"26","iFrame":"true","redirect":{"origin":"http://cdntest-mobile.playtechgaming.com","pathname":"/playtech/iceshow/games/casino/casinoclient.html","templateTypes":{"fun":{"":"lang={locale}"},"real":{"":"temptoken={tempToken}"}}},"playModes":{"loggedOut":{"":"1"},"loggedIn":{"":"1"}}}']);
 	/**
 	 * FILE WRITE TEST
 	 */

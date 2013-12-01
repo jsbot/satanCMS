@@ -24,16 +24,17 @@ define([
 		},
 		getNgm: function(){
 			var _this = this;
-			conn.req('getVerticals',"NGM", function (data) {
-				var data = JSON.parse(data);
-				var modelData = data[0];
+			conn.req('getVerticals',"NGM", function (d) {
+                console.log(d);
+				var data = JSON.parse(d[0].NGM);
+				var modelData = data;
 				console.log("MODEL_DATA");
 				console.log(modelData);
 				//_this.model.set(modelData.NGM[0]);
 
 				_this.model.clear();
-				_this.model.set("_id",modelData._id);
-				_this.model.set(modelData.NGM[0]);
+				_this.model.set("_id",d[0]._id);
+				_this.model.set(modelData);
 
 				_this.render();
 
@@ -56,10 +57,12 @@ define([
 			var output = {};
 			this.preverse($(".entry"), output);
 			delete output["_id"];
-			conn.req('updateVerticals', $("[d-bind='_id']").val()
-			 ,  JSON.stringify(output)
-			 , function (data) {
-			 console.log(data);
+			conn.req('updateVerticals'
+                , $("[d-bind='_id']").val() //verticalId
+                , "NGM" //verticalType
+			    ,  JSON.stringify(output)
+			    , function (data) {
+			    console.log(data);
 			 });
 
 			console.log(output);

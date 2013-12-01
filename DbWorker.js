@@ -23,12 +23,19 @@ DbWorker.prototype.findOne = function(cb){
 	cb(data);
 });
 }
-DbWorker.prototype.update = function(cb, query, updateData){
+DbWorker.prototype.update = function(cb){
+    var query ={};
+    (arguments.length>3) ?   query[arguments[2]]=arguments[3] : query = arguments[2]
+    console.log("query:");
+    console.log(query);
+
 	this.shema.update(
-		{_id:query}
-		,{$set: updateData}
+		{_id:arguments[1]}
+		,{$set:
+            query
+        }
 		, function(error, result) {
-			cb(result);
+			cb(error, result);
 		});
 }
 DbWorker.prototype.save = function(obj){
