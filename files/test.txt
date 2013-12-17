@@ -1,3 +1,4 @@
+{
  "api": {
         "id": "IMS_API",
         "protocol": "http",
@@ -13,4 +14,6 @@
             "languageCode": "EN",
             "deviceId": "xxPxxx",
             "clientType": "casino"
+               }
         }
+}

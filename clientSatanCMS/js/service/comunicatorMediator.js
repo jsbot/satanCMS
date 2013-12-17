@@ -1,43 +1,44 @@
-//facade for providing communication on top of socket
 define(["service/pupsub", "service/messageHelper"], function (pupsub, messageHelper) {
 	messageStore={};
-	var communicatorMediator = function (socket){
-		this.io = socket;
+	var communicatorMediator = function (){
+        if ( arguments.callee.instance )
+        return arguments.callee.instance;
+        arguments.callee.instance = this;
+    }
 
-		console.log("create facade");
+    communicatorMediator.prototype.setSocket = function(socket){
+        this.io = socket;
+        this.startListenSocket();
+    }
 
-        //Server responce handler Area
-		this.io.on("serverResponse", function (messageId,data){
-			if(messageStore.hasOwnProperty(messageId)){
-				pubsub.publish(messageStore[messageId](data));
-				delete messageStore[messageId];
-			}
-		});
-	}
+    communicatorMediator.prototype.startListenSocket = function(){
+        this.io.on("serverResponse", function (messageId,data){
+            if(messageStore.hasOwnProperty(messageId)){
+                pubsub.publish(messageStore[messageId](data));
+                delete messageStore[messageId];
+            }
+        });
+    }
+    communicatorMediator.prototype.socketSend = function(mId, messageType, data){
+        this.io.emit('serverRequest',mId, messageType, data);
+    }
 
-	communicatorMediator.prototype.getMessage = function(messageType, callback){
-		this.io.on("serverResponse", function (data){     //TODO: handle responce and publish event
-			callback(data);
-		});
-		console.log("getMessageRequest: "+messageType);
-	}
+    /**
+    * Later onn Add REST AJAX request POST GET
+    *  */
 
-	communicatorMediator.prototype.req = function(messageType, callback){
+	communicatorMediator.prototype.req = function(){
 		var mId =  messageHelper.generateId();
 		var data = [];
 
 		if (arguments.length>2){
 			data = messageHelper.createDataObj(arguments);
 		}
-		console.log(data);
-		this.io.emit('serverRequest',mId, messageType, data);
-		//subscribe for event
-		console.log("sendMessageRequest: "+messageType+" mId: "+mId);
+        if(this.io){
+            this.socketSend(mId, arguments[0], data);
+        }
+
 		pubsub.subscribe(messageStore[mId]=arguments[arguments.length-1]);
-		console.log("MESSAGESTORE");
-		console.log(messageStore[mId]);
 	}
-
-
-	return communicatorMediator;
+	return CM = new communicatorMediator;
 });

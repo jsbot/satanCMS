@@ -69,8 +69,8 @@ define([
 		},
 		render: function () {
 			var context = this.model;
-			console.log("CONTEXT______________________________");
-			console.log(context);
+			//console.log("CONTEXT______________________________");
+			//console.log(context);
 			var html = this.template({api: context.toJSON()});
 			this.$el.html(html);
 		},
@@ -100,15 +100,9 @@ define([
 				}
 			});
 
-			conn = connector;
-			conn.getMessage('wellcome', function (data) {
-				console.log(data);
-
-			});
-
 			_this.model = new PageModel();
 
-			conn.req('getApi', function (data) {
+			connector.req('getApi', function (data) {
 				var modelData = data[0];
 				_this.model.set(modelData);
 

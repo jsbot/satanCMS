@@ -3,23 +3,41 @@ var http = require("http"),
 	io = require("socket.io"),
 	mongoose = require('mongoose'),
 	dbw = require('./DbWorker'),
-	fs = require('fs');
+	fs = require('fs'),
+    url = require("url");
 
 
 function start() {
 	function onRequest(request, response) {
 		var pathname = request.url;
 		console.log("Request for " + pathname + " received.");
-		if (pathname == '/satanCMS/files/'){
 
-			fs.readFile('../satanCMS/files/test.txt', function read(err, data) {
+        var pparams = url.parse(pathname,true);
+        console.log("------->");
+        console.log(pparams.pathname);
+
+        if (pparams.pathname == '/satanCMS/files'){
+
+			fs.readFile('../satanCMS/files/test.txt', function (err, data) {
 				if (err) {
 					throw err;
 				}
-				response.writeHead(200, {"Content-Type": "text/plain"});
-				response.write(data);
-				response.end();
-			});
+
+                var json =  data.toString() ;
+                json = JSON.parse(json);
+                console.log("------->");
+                console.log(json);
+
+                if (pparams.query.callback && pparams.query.callback != '?') {
+                        json = pparams.query.callback + "(" + JSON.stringify(json) + ");";
+                 }
+
+
+                response.writeHead(200, {   'content-type':'application/json',
+                    'content-length':json.length});
+                response.end(json);
+
+            });
 		}else{
 			response.writeHead(200, {"Content-Type": "text/plain"});
 			response.write("Hello World");
