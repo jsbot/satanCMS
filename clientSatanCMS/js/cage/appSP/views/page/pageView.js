@@ -24,7 +24,7 @@ define([
 		},
 		getNgm: function(){
 			var _this = this;
-			conn.req('getVerticals',"NGM", function (d) {
+			connector.req('getVerticals',"NGM", function (d) {
                 console.log(d);
 				var data = JSON.parse(d[0].NGM);
 				var modelData = data;
@@ -45,7 +45,7 @@ define([
 			var output = {};
 			this.preverse($(".entry"), output);
 			delete output["_id"];
-			conn.req('updateApi', $("[d-bind='_id']").val()
+			connector.req('updateApi', $("[d-bind='_id']").val()
 			 ,  JSON.stringify(output)
 			 , function (data) {
 			 console.log(data);
@@ -57,7 +57,7 @@ define([
 			var output = {};
 			this.preverse($(".entry"), output);
 			delete output["_id"];
-			conn.req('updateVerticals'
+			connector.req('updateVerticals'
                 , $("[d-bind='_id']").val() //verticalId
                 , "NGM" //verticalType
 			    ,  JSON.stringify(output)

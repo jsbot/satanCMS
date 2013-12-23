@@ -20,6 +20,20 @@ define(["service/pupsub", "service/messageHelper"], function (pupsub, messageHel
         });
     }
     communicatorMediator.prototype.socketSend = function(mId, messageType, data){
+	    /**
+	     * [
+	     "request":"get|set|delete|auth"
+	     "qualifier": "IMSContent.Games",
+	     "contextId": "",
+	     "correlationId":"#ID",
+	     data:{}
+	     ]
+
+	     * */
+
+	    console.log(mId);
+	    console.log(messageType);
+	    console.log(data);
         this.io.emit('serverRequest',mId, messageType, data);
     }
 
@@ -31,9 +45,11 @@ define(["service/pupsub", "service/messageHelper"], function (pupsub, messageHel
 		var mId =  messageHelper.generateId();
 		var data = [];
 
+
 		if (arguments.length>2){
 			data = messageHelper.createDataObj(arguments);
 		}
+
         if(this.io){
             this.socketSend(mId, arguments[0], data);
         }
