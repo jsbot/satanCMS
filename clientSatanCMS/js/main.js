@@ -14,6 +14,10 @@ require.config({
 			deps: ['underscore', 'jquery'],
 			exports: 'Backbone'
 		},
+        backboneNested: {
+			deps: ['underscore', 'jquery','backbone'],
+			exports: 'backboneNested'
+		},
 		handlebars: {
 			exports: 'Handlebars'
 		},
@@ -28,7 +32,8 @@ require.config({
 		backbone: 'lib/ext/backbone',
 		handlebars: 'lib/ext/handlebars',
 		socketio: 'lib/ext/socket.io',
-		json2: 'lib/ext/json2'
+		json2: 'lib/ext/json2',
+        backboneNested:'lib/ext/backbone-nested'
 	}
 
 });
