@@ -3,7 +3,13 @@ define([
     'underscore',
     'backbone'
 ], function(_, Backbone){
-    var PageModel = Backbone.Model.extend({});
-    // Return the model for the module
+    var PageModel = Backbone.Model.extend({
+		defaults: {
+			userName: "none",
+			userStatus: "none",
+			userBallance: 0
+		}
+	});
+
     return PageModel;
 });
